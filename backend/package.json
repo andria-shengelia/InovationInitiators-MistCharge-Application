@@ -1,0 +1,35 @@
+{
+  "name": "mist-charge-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Mist Charge IoT Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "dev:mock": "nodemon server-dev.js",
+    "dev:db": "nodemon server-db.js",
+    "dev:iot": "nodemon server-iot.js",
+    "init-db": "node scripts/init-database.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "pg": "^8.11.3",
+    "mqtt": "^5.3.0",
+    "dotenv": "^16.3.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": [
+    "iot",
+    "aws",
+    "mqtt",
+    "postgresql",
+    "atmospheric-water-generator"
+  ],
+  "author": "Mist Charge Team",
+  "license": "MIT"
+}
