@@ -1,18 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Thermometer } from 'lucide-react-native';
+import { TEMPERATURE, BACKGROUND, TEXT, BORDER, SHADOW } from '@/constants/colors';
 
 interface TemperatureCardProps {
   temperature: number;
 }
 
 export function TemperatureCard({ temperature }: TemperatureCardProps) {
-  const getTemperatureColor = (temp: number) => {
-  if (temp < 15) return '#3b82f6'; // Blue for cold
-  if (temp < 25) return '#22c55e'; // Green for comfortable
-  if (temp < 35) return '#f59e0b'; // Orange for warm
-  return '#ef4444'; // Red for hot
-};
+    const getTemperatureColor = (temp: number) => {
+    if (temp < 15) return TEMPERATURE.COLD;
+    if (temp < 25) return TEMPERATURE.COMFORTABLE;
+    if (temp < 35) return TEMPERATURE.WARM;
+    return TEMPERATURE.HOT;
+  };
 
   const color = getTemperatureColor(temperature);
 
@@ -37,11 +38,11 @@ export function TemperatureCard({ temperature }: TemperatureCardProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: BACKGROUND.CARD,
     borderRadius: 16,
     padding: 16,
     borderLeftWidth: 4,
-    shadowColor: '#000',
+    shadowColor: SHADOW.PRIMARY,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6b7280',
+    color: TEXT.LIGHT,
     marginLeft: 8,
   },
   valueContainer: {
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
   },
   status: {
     fontSize: 12,
-    color: '#9ca3af',
+    color: TEXT.MUTED,
     fontWeight: '500',
   },
 });

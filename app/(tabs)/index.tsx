@@ -7,6 +7,7 @@ import {
   Dimensions,
   RefreshControl,
 } from 'react-native';
+import { THEME, TEXT, BACKGROUND, BORDER, STATUS } from '@/constants/colors';
 
 import { StatusBar } from 'expo-status-bar';
 import { TemperatureCard } from '@/components/TemperatureCard';
@@ -92,30 +93,30 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e3cfc4',
+    backgroundColor: THEME.BACKGROUND,
   },
   header: {
     paddingHorizontal: 20,
     paddingBottom: 20,
-    backgroundColor: '#ffffff',
-    borderBottomColor: '#e2e8f0',
+    backgroundColor: BACKGROUND.CARD,
+    borderBottomColor: BORDER.LIGHT,
     borderBottomWidth: 1,
   },
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#1e293b',
+    color: TEXT.PRIMARY,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: '#64748b',
+    color: TEXT.SECONDARY,
     fontWeight: '500',
     marginBottom: 4,
   },
   lastUpdated: {
     fontSize: 12,
-    color: '#94a3b8',
+    color: TEXT.TERTIARY,
     fontWeight: '400',
   },
   content: {
@@ -135,25 +136,25 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: '#64748b',
+    color: TEXT.SECONDARY,
     fontWeight: '500',
   },
   errorContainer: {
     padding: 20,
-    backgroundColor: '#fef2f2',
+    backgroundColor: BACKGROUND.ERROR,
     margin: 16,
     borderRadius: 8,
     borderLeftWidth: 4,
-    borderLeftColor: '#ef4444',
+    borderLeftColor: STATUS.ERROR,
   },
   errorText: {
     fontSize: 16,
-    color: '#dc2626',
+    color: STATUS.ERROR_DARK,
     fontWeight: '600',
     marginBottom: 4,
   },
   errorSubtext: {
     fontSize: 14,
-    color: '#991b1b',
+    color: STATUS.ERROR_DARKER,
   },
 });

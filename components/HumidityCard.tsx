@@ -1,18 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Droplets } from 'lucide-react-native';
+import { HUMIDITY, BACKGROUND, TEXT, SHADOW } from '@/constants/colors';
 
 interface HumidityCardProps {
   humidity: number;
 }
 
 export function HumidityCard({ humidity }: HumidityCardProps) {
-  const getHumidityColor = (hum: number) => {
-  if (hum < 30) return '#ef4444'; // Red for too dry
-  if (hum < 60) return '#f59e0b'; // Orange for moderate
-  if (hum < 80) return '#22c55e'; // Green for optimal
-  return '#06b6d4'; // Cyan for high
-};
+    const getHumidityColor = (hum: number) => {
+    if (hum < 30) return HUMIDITY.DRY;
+    if (hum < 60) return HUMIDITY.MODERATE;
+    if (hum < 80) return HUMIDITY.OPTIMAL;
+    return HUMIDITY.HIGH;
+  };
 
   const color = getHumidityColor(humidity);
 
@@ -37,11 +38,11 @@ export function HumidityCard({ humidity }: HumidityCardProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: BACKGROUND.CARD,
     borderRadius: 16,
     padding: 16,
     borderLeftWidth: 4,
-    shadowColor: '#000',
+    shadowColor: SHADOW.PRIMARY,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6b7280',
+    color: TEXT.LIGHT,
     marginLeft: 8,
   },
   valueContainer: {
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
   },
   status: {
     fontSize: 12,
-    color: '#9ca3af',
+    color: TEXT.MUTED,
     fontWeight: '500',
   },
 });

@@ -2,17 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Battery } from 'lucide-react-native';
 import { CircularProgress } from './CircularProgress';
+import { BATTERY, BACKGROUND, TEXT, SHADOW } from '@/constants/colors';
 
 interface BatteryCardProps {
   percentage: number;
 }
 
 export function BatteryCard({ percentage }: BatteryCardProps) {
-  const getBatteryColor = (level: number) => {
-  if (level > 60) return '#22c55e'; // Green for good
-  if (level > 30) return '#f59e0b'; // Orange for medium
-  return '#ef4444'; // Red for low
-};
+    const getBatteryColor = (level: number) => {
+    if (level > 60) return BATTERY.GOOD;
+    if (level > 30) return BATTERY.MEDIUM;
+    return BATTERY.LOW;
+  };
 
   const color = getBatteryColor(percentage);
 
@@ -49,12 +50,12 @@ export function BatteryCard({ percentage }: BatteryCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
+    backgroundColor: BACKGROUND.CARD,
     borderRadius: 16,
     padding: 20,
     marginHorizontal: 16,
     marginBottom: 16,
-    shadowColor: '#000',
+    shadowColor: SHADOW.PRIMARY,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#374151',
+    color: TEXT.MEDIUM,
     marginLeft: 12,
   },
   content: {
@@ -85,12 +86,12 @@ const styles = StyleSheet.create({
   status: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1f2937',
+    color: TEXT.DARK,
     marginBottom: 4,
   },
   estimatedTime: {
     fontSize: 14,
-    color: '#6b7280',
+    color: TEXT.LIGHT,
     fontWeight: '500',
   },
 });
