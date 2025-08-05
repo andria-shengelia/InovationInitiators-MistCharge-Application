@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Shield, ShieldCheck, ShieldX } from 'lucide-react-native';
+import { WATER, BACKGROUND, TEXT, SHADOW } from '@/constants/colors';
 
 interface WaterQualityCardProps {
   quality: 'safe' | 'caution' | 'unsafe';
@@ -12,34 +13,34 @@ export function WaterQualityCard({ quality }: WaterQualityCardProps) {
       case 'safe':
         return {
           icon: ShieldCheck,
-          color: '#22c55e',
+          color: WATER.QUALITY_SAFE,
           text: 'Safe to Drink',
           description: 'Water quality is excellent',
-          bgColor: '#f0fdf4',
+          bgColor: BACKGROUND.SUCCESS,
         };
       case 'caution':
         return {
           icon: Shield,
-          color: '#f59e0b',
+          color: WATER.QUALITY_CAUTION,
           text: 'Use with Caution',
           description: 'Consider filtering before consumption',
-          bgColor: '#fffbeb',
+          bgColor: BACKGROUND.WARNING,
         };
       case 'unsafe':
         return {
           icon: ShieldX,
-          color: '#ef4444',
+          color: WATER.QUALITY_UNSAFE,
           text: 'Not Safe to Drink',
           description: 'Filtration required',
-          bgColor: '#fef2f2',
+          bgColor: BACKGROUND.ERROR,
         };
       default:
         return {
           icon: Shield,
-          color: '#6b7280',
+          color: WATER.QUALITY_UNKNOWN,
           text: 'Unknown',
           description: 'Checking water quality...',
-          bgColor: '#f8fafc',
+          bgColor: BACKGROUND.INFO,
         };
     }
   };
@@ -86,8 +87,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 16,
     borderLeftWidth: 4,
-    borderLeftColor: '#22c55e',
-    shadowColor: '#000',
+    borderLeftColor: WATER.QUALITY_SAFE,
+    shadowColor: SHADOW.PRIMARY,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#374151',
+    color: TEXT.MEDIUM,
     marginLeft: 12,
   },
   content: {
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 14,
-    color: '#6b7280',
+    color: TEXT.LIGHT,
     marginBottom: 16,
     fontWeight: '500',
   },
@@ -131,13 +132,13 @@ const styles = StyleSheet.create({
   },
   indicatorLabel: {
     fontSize: 12,
-    color: '#9ca3af',
+    color: TEXT.MUTED,
     fontWeight: '500',
     marginBottom: 4,
   },
   indicatorValue: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#374151',
+    color: TEXT.MEDIUM,
   },
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { ChartBar as BarChart3 } from 'lucide-react-native';
+import { CHART, BACKGROUND, TEXT, BORDER, SHADOW } from '@/constants/colors';
 
 const { width } = Dimensions.get('window');
 
@@ -16,7 +17,7 @@ export function StatisticsChart({ data }: StatisticsChartProps) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <BarChart3 size={24} color="#3b82f6" />
+        <BarChart3 size={24} color={CHART.PRIMARY} />
         <Text style={styles.label}>7-Day Collection</Text>
       </View>
 
@@ -73,14 +74,14 @@ export function StatisticsChart({ data }: StatisticsChartProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
+    backgroundColor: BACKGROUND.CARD,
     borderRadius: 16,
     padding: 20,
     marginHorizontal: 16,
     marginBottom: 16,
     borderLeftWidth: 4,
-    borderLeftColor: '#3b82f6',
-    shadowColor: '#000',
+    borderLeftColor: CHART.PRIMARY,
+    shadowColor: SHADOW.PRIMARY,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#374151',
+    color: TEXT.MEDIUM,
     marginLeft: 12,
   },
   chart: {
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
   },
   yAxisLabel: {
     fontSize: 12,
-    color: '#9ca3af',
+    color: TEXT.MUTED,
     fontWeight: '500',
   },
   chartArea: {
@@ -133,25 +134,25 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   bar: {
-    backgroundColor: '#3b82f6',
+    backgroundColor: CHART.BARS,
     borderRadius: 4,
   },
   dayLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#374151',
+    color: TEXT.MEDIUM,
     marginBottom: 2,
   },
   amountLabel: {
     fontSize: 10,
-    color: '#9ca3af',
+    color: TEXT.MUTED,
     fontWeight: '500',
   },
   summary: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
+    borderTopColor: BORDER.MEDIUM,
     paddingTop: 16,
   },
   summaryItem: {
@@ -159,13 +160,13 @@ const styles = StyleSheet.create({
   },
   summaryLabel: {
     fontSize: 14,
-    color: '#6b7280',
+    color: TEXT.LIGHT,
     fontWeight: '500',
     marginBottom: 4,
   },
   summaryValue: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1f2937',
+    color: TEXT.DARK,
   },
 });

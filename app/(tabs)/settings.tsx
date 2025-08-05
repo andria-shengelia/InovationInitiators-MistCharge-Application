@@ -8,6 +8,7 @@ import {
   Switch,
   Alert,
 } from 'react-native';
+import { THEME, TEXT, BACKGROUND, BORDER, STATUS, SWITCH, SHADOW } from '@/constants/colors';
 
 import { StatusBar } from 'expo-status-bar';
 import { 
@@ -48,13 +49,13 @@ export default function Settings() {
           <View style={styles.card}>
             <View style={styles.settingItem}>
               <View style={styles.settingInfo}>
-                <Wifi size={24} color="#22c55e" />
+                <Wifi size={24} color={STATUS.SUCCESS} />
                 <View style={styles.settingText}>
                   <Text style={styles.settingLabel}>AWS IoT Core</Text>
                   <Text style={styles.settingValue}>Connected</Text>
                 </View>
               </View>
-              <View style={[styles.statusDot, { backgroundColor: '#22c55e' }]} />
+              <View style={[styles.statusDot, { backgroundColor: STATUS.SUCCESS }]} />
             </View>
           </View>
         </View>
@@ -65,7 +66,7 @@ export default function Settings() {
           <View style={styles.card}>
             <View style={styles.settingItem}>
               <View style={styles.settingInfo}>
-                <Bell size={24} color="#3b82f6" />
+                <Bell size={24} color={STATUS.INFO} />
                 <View style={styles.settingText}>
                   <Text style={styles.settingLabel}>Push Notifications</Text>
                   <Text style={styles.settingValue}>
@@ -76,8 +77,8 @@ export default function Settings() {
               <Switch
                 value={notifications}
                 onValueChange={setNotifications}
-                trackColor={{ false: '#e2e8f0', true: '#a67c52' }}
-                thumbColor="#ffffff"
+                trackColor={{ false: SWITCH.TRACK_OFF, true: SWITCH.TRACK_ON }}
+                thumbColor={SWITCH.THUMB}
               />
             </View>
           </View>
@@ -89,7 +90,7 @@ export default function Settings() {
           <View style={styles.card}>
             <View style={styles.settingItem}>
               <View style={styles.settingInfo}>
-                <RefreshCw size={24} color="#3b82f6" />
+                <RefreshCw size={24} color={STATUS.INFO} />
                 <View style={styles.settingText}>
                   <Text style={styles.settingLabel}>Auto Refresh</Text>
                   <Text style={styles.settingValue}>Every 30 seconds</Text>
@@ -98,8 +99,8 @@ export default function Settings() {
               <Switch
                 value={autoRefresh}
                 onValueChange={setAutoRefresh}
-                trackColor={{ false: '#e2e8f0', true: '#3b82f6' }}
-                thumbColor="#ffffff"
+                trackColor={{ false: SWITCH.TRACK_OFF, true: SWITCH.TRACK_ON }}
+                thumbColor={SWITCH.THUMB}
               />
             </View>
           </View>
@@ -112,7 +113,7 @@ export default function Settings() {
           <View style={styles.card}>
             <TouchableOpacity style={styles.settingItem} onPress={handleDeviceInfo}>
               <View style={styles.settingInfo}>
-                <Info size={24} color="#3b82f6" />
+                <Info size={24} color={STATUS.INFO} />
                 <View style={styles.settingText}>
                   <Text style={styles.settingLabel}>Device Information</Text>
                   <Text style={styles.settingValue}>View device details</Text>
@@ -130,24 +131,24 @@ export default function Settings() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e3cfc4',
+    backgroundColor: THEME.BACKGROUND,
   },
   header: {
     paddingHorizontal: 20,
     paddingBottom: 20,
-    backgroundColor: '#ffffff',
-    borderBottomColor: '#e2e8f0',
+    backgroundColor: BACKGROUND.CARD,
+    borderBottomColor: BORDER.LIGHT,
     borderBottomWidth: 1,
   },
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#1e293b',
+    color: TEXT.PRIMARY,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: '#64748b',
+    color: TEXT.SECONDARY,
     fontWeight: '500',
   },
   content: {
@@ -160,14 +161,14 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#374151',
+    color: TEXT.MEDIUM,
     marginBottom: 12,
   },
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: BACKGROUND.CARD,
     borderRadius: 16,
     padding: 4,
-    shadowColor: '#000',
+    shadowColor: SHADOW.PRIMARY,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -194,12 +195,12 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
+    color: TEXT.DARK,
     marginBottom: 2,
   },
   settingValue: {
     fontSize: 14,
-    color: '#6b7280',
+    color: TEXT.LIGHT,
   },
   statusDot: {
     width: 12,
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 1,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: BORDER.DARK,
     marginHorizontal: 16,
   },
   bottomSpacing: {

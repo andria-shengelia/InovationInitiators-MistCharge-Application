@@ -7,6 +7,7 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import { POWER, BACKGROUND, TEXT, SHADOW } from '@/constants/colors';
 
 interface PowerControlProps {
   isOn: boolean;
@@ -36,7 +37,7 @@ export function PowerControl({ isOn, onToggle }: PowerControlProps) {
       
       <View style={styles.controlContainer}>
         <View style={styles.statusContainer}>
-          <View style={[styles.statusIndicator, { backgroundColor: isOn ? '#10b981' : '#ef4444' }]} />
+          <View style={[styles.statusIndicator, { backgroundColor: isOn ? POWER.ON : POWER.OFF }]} />
           <Text style={styles.statusText}>
             {isOn ? 'RUNNING' : 'STOPPED'}
           </Text>
@@ -45,7 +46,7 @@ export function PowerControl({ isOn, onToggle }: PowerControlProps) {
         <TouchableOpacity
           style={[
             styles.powerButton,
-            { backgroundColor: isOn ? '#ef4444' : '#10b981' }
+            { backgroundColor: isOn ? POWER.OFF : POWER.ON }
           ]}
           onPress={handleToggle}
           disabled={loading}
@@ -74,11 +75,11 @@ export function PowerControl({ isOn, onToggle }: PowerControlProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
+    backgroundColor: BACKGROUND.CARD,
     borderRadius: 16,
     padding: 20,
     margin: 16,
-    shadowColor: '#000',
+    shadowColor: SHADOW.PRIMARY,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -93,12 +94,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#1e293b',
+    color: TEXT.PRIMARY,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: TEXT.SECONDARY,
     fontWeight: '500',
   },
   controlContainer: {
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1e293b',
+    color: TEXT.PRIMARY,
   },
   powerButton: {
     paddingHorizontal: 24,
@@ -130,18 +131,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   powerButtonText: {
-    color: '#ffffff',
+    color: THEME.WHITE,
     fontSize: 14,
     fontWeight: '600',
   },
   infoContainer: {
-    backgroundColor: '#f8fafc',
+    backgroundColor: BACKGROUND.POWER_INFO,
     padding: 12,
     borderRadius: 8,
   },
   infoText: {
     fontSize: 14,
-    color: '#64748b',
+    color: TEXT.SECONDARY,
     textAlign: 'center',
     lineHeight: 20,
   },

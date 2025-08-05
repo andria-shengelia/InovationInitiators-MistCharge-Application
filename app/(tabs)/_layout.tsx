@@ -1,4 +1,5 @@
 import { Tabs } from 'expo-router';
+import { TAB } from '@/constants/colors';
 import { Droplets, Settings, ChartBar as BarChart3 } from 'lucide-react-native';
 
 export default function TabLayout() {
@@ -6,11 +7,11 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#2563eb',
-        tabBarInactiveTintColor: '#6b7280',
-        tabBarStyle: {
-          backgroundColor: '#ffffff',
-          borderTopColor: '#e5e7eb',
+              tabBarActiveTintColor: TAB.ACTIVE,
+      tabBarInactiveTintColor: TAB.INACTIVE,
+      tabBarStyle: {
+        backgroundColor: TAB.BACKGROUND,
+        borderTopColor: TAB.BORDER,
           paddingBottom: 8,
           paddingTop: 8,
           height: 80,
