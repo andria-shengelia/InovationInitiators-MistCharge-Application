@@ -1,6 +1,6 @@
 // Main Theme Colors
 export const THEME = {
-  BACKGROUND: '#e3cfc4', // Warm beige background
+  BACKGROUND: '#B8E8E1', // Warm beige background
   WHITE: '#ffffff',
   BLACK: '#000000',
 } as const;
