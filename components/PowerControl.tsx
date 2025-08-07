@@ -7,7 +7,7 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { POWER, BACKGROUND, TEXT, SHADOW } from '@/constants/colors';
+import { POWER, BACKGROUND, TEXT, THEME, SHADOW } from '@/constants/colors';
 
 interface PowerControlProps {
   isOn: boolean;

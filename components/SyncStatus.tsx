@@ -18,9 +18,13 @@ export function SyncStatus({ compact = false }: SyncStatusProps) {
   });
 
   useEffect(() => {
+    // Initial status check only - no automatic polling
+    // Status will be updated manually when sync operations occur
     updateSyncStatus();
-    const interval = setInterval(updateSyncStatus, 5000);
-    return () => clearInterval(interval);
+    
+    return () => {
+      // No interval to clear
+    };
   }, []);
 
   const updateSyncStatus = async () => {

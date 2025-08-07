@@ -14,15 +14,17 @@ echo "📍 Network IP: $NETWORK_IP"
 
 # Kill any existing processes
 echo "🧹 Cleaning up existing processes..."
+pkill -f "node.*server-dev.js" 2>/dev/null
 pkill -f "node.*server-iot.js" 2>/dev/null
 pkill -f "npm run dev" 2>/dev/null
-sleep 2
+pkill -f "expo start" 2>/dev/null
+sleep 3
 
 # Start backend
 echo ""
 echo "🔧 Starting backend server..."
 cd backend
-node server-iot.js &
+node server-dev.js &
 BACKEND_PID=$!
 cd ..
 

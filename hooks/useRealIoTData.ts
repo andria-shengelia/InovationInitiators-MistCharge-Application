@@ -244,24 +244,18 @@ export function useRealIoTData() {
   };
 
   useEffect(() => {
-    // Initial data fetch
+    // Initial data fetch only - no automatic polling
+    // Data will be updated only when MQTT messages are received
     refreshData();
 
-    // Update data every 10 seconds to get real-time updates
-    intervalRef.current = setInterval(() => {
-      fetchStatusData(); // Only fetch status, not stats (to avoid too many requests)
-    }, 10000);
-
-    // Fetch stats every 30 seconds
-    const statsInterval = setInterval(() => {
-      fetchStatsData();
-    }, 30000);
+    // No automatic intervals - data is static until MQTT updates
+    // The backend will handle MQTT messages and update the stored data
+    // Manual refresh is available via pull-to-refresh
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
-      clearInterval(statsInterval);
     };
   }, []);
 

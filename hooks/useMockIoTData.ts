@@ -53,9 +53,9 @@ export function useMockIoTData() {
   };
 
   useEffect(() => {
-    // Update data every 5 seconds to simulate real-time updates
-    intervalRef.current = setInterval(updateData, 5000);
-
+    // No automatic updates - data is static until manually refreshed
+    // This simulates the real IoT behavior where data only changes via MQTT
+    
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
