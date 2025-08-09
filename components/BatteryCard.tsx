@@ -31,16 +31,12 @@ export function BatteryCard({ percentage }: BatteryCardProps) {
           strokeWidth={12}
           color={color}
         />
-        <View style={styles.info}>
+        <View style={styles.valueContainer}>
+          <Text style={[styles.value, { color }]}>{Math.round(percentage)}%</Text>
           <Text style={styles.status}>
-            {percentage > 60 ? 'Excellent' :
-             percentage > 30 ? 'Good' :
-             percentage > 15 ? 'Low' : 'Critical'}
-          </Text>
-          <Text style={styles.estimatedTime}>
-            {percentage > 60 ? '~12h remaining' :
-             percentage > 30 ? '~6h remaining' :
-             percentage > 15 ? '~2h remaining' : 'Charge needed'}
+            {percentage < 20 ? 'Critical' : 
+             percentage < 40 ? 'Low' :
+             percentage < 70 ? 'Good' : 'Excellent'}
           </Text>
         </View>
       </View>
@@ -93,5 +89,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: TEXT.LIGHT,
     fontWeight: '500',
+  },
+  valueContainer: {
+    marginLeft: 24,
+  },
+  value: {
+    fontSize: 48,
+    fontWeight: 'bold',
   },
 });

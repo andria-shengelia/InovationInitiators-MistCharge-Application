@@ -24,7 +24,7 @@ export function HumidityCard({ humidity }: HumidityCardProps) {
         <Text style={styles.label}>Humidity</Text>
       </View>
       <View style={styles.valueContainer}>
-        <Text style={[styles.value, { color }]}>{humidity}%</Text>
+        <Text style={[styles.value, { color }]}>{Math.round(humidity)}%</Text>
         <Text style={styles.status}>
           {humidity < 30 ? 'Too Dry' : 
            humidity < 60 ? 'Moderate' :

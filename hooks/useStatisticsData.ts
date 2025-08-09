@@ -34,6 +34,7 @@ export function useStatisticsData(period: '7' | '30') {
     chartData: [],
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const generateMockData = (days: number): StatisticsData => {
     const chartData = [];
@@ -83,18 +84,51 @@ export function useStatisticsData(period: '7' | '30') {
 
   const fetchStatistics = async () => {
     setLoading(true);
+    setError(null);
     
     try {
-      // In a real app, this would fetch from your backend API:
-      // const response = await fetch(`/api/stats?days=${period}`);
-      // const data = await response.json();
+      // Fetch real data from backend API
+      const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://10.60.210.109:3001/api';
+      const response = await fetch(`${API_BASE_URL}/stats?days=${period}`);
       
-      // For now, we'll use mock data
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
-      const mockData = generateMockData(parseInt(period));
-      setData(mockData);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const statsData = await response.json();
+      console.log('📊 Received real stats:', statsData);
+      
+      // Convert backend format to frontend format
+      const chartData = statsData.map((stat: any) => ({
+        date: stat.date,
+        amount: stat.amount,
+        temperature: stat.temperature || 23,
+        humidity: stat.humidity || 75
+      }));
+      
+      const totalWater = chartData.reduce((sum, item) => sum + item.amount, 0);
+      const dailyAverage = totalWater / chartData.length;
+      const avgTemperature = chartData.reduce((sum, item) => sum + item.temperature, 0) / chartData.length;
+      const avgBattery = 85; // Default value since battery not in stats
+      
+      const formattedData = {
+        summary: {
+          totalWater: Math.round(totalWater * 10) / 10,
+          waterChange: Math.round((Math.random() * 10 + 5) * 10) / 10, // Mock change
+          dailyAverage: Math.round(dailyAverage * 10) / 10,
+          avgChange: Math.round((Math.random() * 8 + 2) * 10) / 10, // Mock change
+          avgTemperature: Math.round(avgTemperature * 10) / 10,
+          tempChange: Math.round((Math.random() * 6 + 1) * 10) / 10, // Mock change
+          avgBattery: Math.round(avgBattery),
+          batteryChange: Math.round((Math.random() * 5 + 1) * 10) / 10, // Mock change
+        },
+        chartData,
+      };
+      
+      setData(formattedData);
     } catch (error) {
       console.error('Error fetching statistics:', error);
+      setError('Failed to load statistics');
       // Fallback to mock data
       const mockData = generateMockData(parseInt(period));
       setData(mockData);
@@ -111,5 +145,5 @@ export function useStatisticsData(period: '7' | '30') {
     fetchStatistics();
   }, [period]);
 
-  return { data, loading, refreshData };
+  return { data, loading, error, refreshData };
 }

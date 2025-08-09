@@ -35,11 +35,11 @@ export default function Settings() {
     <View style={styles.container}>
       <StatusBar style="dark" />
       
-      {/* Header */}
+      {/* Header 
       <View style={styles.header}>
         <Text style={styles.title}>Settings</Text>
         <Text style={styles.subtitle}>Device Configuration</Text>
-      </View>
+      </View>*/}
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         

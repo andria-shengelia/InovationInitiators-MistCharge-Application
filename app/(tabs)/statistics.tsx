@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import { THEME, TEXT, BACKGROUND, BORDER, SHADOW, CHART } from '@/constants/colors';
 import { StatusBar } from 'expo-status-bar';
@@ -13,18 +14,29 @@ import { useStatisticsData } from '@/hooks/useStatisticsData';
 
 export default function Statistics() {
   const [selectedPeriod, setSelectedPeriod] = useState<'7' | '30'>('7');
-  const { data, loading, error } = useStatisticsData(selectedPeriod);
+  const { data, loading, error, refreshData } = useStatisticsData(selectedPeriod);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refreshData();
+    setRefreshing(false);
+  };
 
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
       
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Header */}
+      <ScrollView 
+        style={styles.content} 
+        showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
+        {/* Header 
         <View style={styles.header}>
           <Text style={styles.title}>Statistics</Text>
           <Text style={styles.subtitle}>Water collection analytics</Text>
-        </View>
+        </View>*/}000
 
         {/* Period Selector */}
         <View style={styles.periodSelector}>
@@ -74,28 +86,42 @@ export default function Statistics() {
         )}
 
         {/* Statistics Chart */}
-        {!loading && !error && (
+        {!loading && !error && data.chartData && data.chartData.length > 0 && (
           <View style={styles.chartContainer}>
-            <MonthlyChart data={data} period={selectedPeriod} />
+            <MonthlyChart data={data.chartData} period={selectedPeriod} />
           </View>
         )}
 
         {/* Summary Stats */}
-        {!loading && !error && data.length > 0 && (
+        {!loading && !error && data.chartData && data.chartData.length > 0 && (
           <View style={styles.summaryContainer}>
             <Text style={styles.summaryTitle}>Summary</Text>
             <View style={styles.summaryRow}>
               <View style={styles.summaryItem}>
                 <Text style={styles.summaryValue}>
-                  {data.reduce((sum, item) => sum + item.amount, 0).toFixed(1)}L
+                  {data.summary.totalWater}L
                 </Text>
                 <Text style={styles.summaryLabel}>Total Collected</Text>
               </View>
               <View style={styles.summaryItem}>
                 <Text style={styles.summaryValue}>
-                  {(data.reduce((sum, item) => sum + item.amount, 0) / data.length).toFixed(1)}L
+                  {data.summary.dailyAverage}L
                 </Text>
                 <Text style={styles.summaryLabel}>Daily Average</Text>
+              </View>
+            </View>
+            <View style={styles.summaryRow}>
+              <View style={styles.summaryItem}>
+                <Text style={styles.summaryValue}>
+                  {data.summary.avgTemperature}°C
+                </Text>
+                <Text style={styles.summaryLabel}>Avg Temperature</Text>
+              </View>
+              <View style={styles.summaryItem}>
+                <Text style={styles.summaryValue}>
+                  {data.summary.avgBattery}%
+                </Text>
+                <Text style={styles.summaryLabel}>Avg Battery</Text>
               </View>
             </View>
           </View>

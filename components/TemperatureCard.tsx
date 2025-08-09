@@ -24,7 +24,7 @@ export function TemperatureCard({ temperature }: TemperatureCardProps) {
         <Text style={styles.label}>Temperature</Text>
       </View>
       <View style={styles.valueContainer}>
-        <Text style={[styles.value, { color }]}>{temperature}°C</Text>
+        <Text style={[styles.value, { color }]}>{temperature.toFixed(1)}°C</Text>
         <Text style={styles.status}>
           {temperature < 15 ? 'Cold' : 
            temperature < 25 ? 'Comfortable' :

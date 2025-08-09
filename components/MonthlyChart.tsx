@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { useMemo, useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -9,9 +9,22 @@ interface MonthlyChartProps {
 }
 
 export function MonthlyChart({ data, period }: MonthlyChartProps) {
-  const maxAmount = Math.max(...data.map(d => d.amount));
+  // Ensure chronological order and that the last item is the latest (today)
+  const sortedData = useMemo(() => {
+    return [...data].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  }, [data]);
+
+  const maxAmount = Math.max(...sortedData.map(d => d.amount), 1);
   const chartWidth = width - 80; // Account for margins and padding
-  const barWidth = Math.max(8, (chartWidth - (data.length * 4)) / data.length);
+  const barWidth = Math.max(8, (chartWidth - (sortedData.length * 4)) / sortedData.length);
+
+  const scrollRef = useRef<ScrollView>(null);
+  useEffect(() => {
+    if (period === '30' && scrollRef.current) {
+      // Scroll to the end so the user sees the latest (today) on the right
+      setTimeout(() => scrollRef.current?.scrollToEnd({ animated: false }), 0);
+    }
+  }, [period, sortedData.length]);
 
   return (
     <View style={styles.container}>
@@ -25,13 +38,17 @@ export function MonthlyChart({ data, period }: MonthlyChartProps) {
         </View>
         
         <ScrollView 
+          ref={scrollRef}
           horizontal 
           showsHorizontalScrollIndicator={false}
-          style={styles.chartScrollView}>
+          style={styles.chartScrollView}
+        >
           <View style={styles.barsContainer}>
-            {data.map((item, index) => {
+            {sortedData.map((item, index) => {
               const barHeight = (item.amount / maxAmount) * 160;
-              const isWeekend = new Date(item.date).getDay() === 0 || new Date(item.date).getDay() === 6;
+              // Parse as UTC to avoid timezone shifting the day
+              const dateObj = new Date(item.date + 'T00:00:00Z');
+              const isWeekend = dateObj.getUTCDay() === 0 || dateObj.getUTCDay() === 6;
               
               return (
                 <View key={index} style={styles.barColumn}>
@@ -49,8 +66,8 @@ export function MonthlyChart({ data, period }: MonthlyChartProps) {
                   </View>
                   <Text style={styles.dateLabel}>
                     {period === '7' 
-                      ? new Date(item.date).toLocaleDateString('en-US', { weekday: 'short' })
-                      : new Date(item.date).getDate()
+                      ? dateObj.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' })
+                      : String(dateObj.getUTCDate())
                     }
                   </Text>
                   <Text style={styles.amountLabel}>{item.amount.toFixed(1)}</Text>
@@ -78,25 +95,25 @@ export function MonthlyChart({ data, period }: MonthlyChartProps) {
         <View style={styles.summaryItem}>
           <Text style={styles.summaryLabel}>Total Collection</Text>
           <Text style={styles.summaryValue}>
-            {data.reduce((sum, item) => sum + item.amount, 0).toFixed(1)}L
+            {sortedData.reduce((sum, item) => sum + item.amount, 0).toFixed(1)}L
           </Text>
         </View>
         <View style={styles.summaryItem}>
           <Text style={styles.summaryLabel}>Best Day</Text>
           <Text style={styles.summaryValue}>
-            {Math.max(...data.map(d => d.amount)).toFixed(1)}L
+            {Math.max(...sortedData.map(d => d.amount)).toFixed(1)}L
           </Text>
         </View>
         <View style={styles.summaryItem}>
           <Text style={styles.summaryLabel}>Avg Humidity</Text>
           <Text style={styles.summaryValue}>
-            {(data.reduce((sum, item) => sum + item.humidity, 0) / data.length).toFixed(0)}%
+            {(sortedData.reduce((sum, item) => sum + item.humidity, 0) / sortedData.length).toFixed(0)}%
           </Text>
         </View>
         <View style={styles.summaryItem}>
           <Text style={styles.summaryLabel}>Avg Temp</Text>
           <Text style={styles.summaryValue}>
-            {(data.reduce((sum, item) => sum + item.temperature, 0) / data.length).toFixed(1)}°C
+            {(sortedData.reduce((sum, item) => sum + item.temperature, 0) / sortedData.length).toFixed(1)}°C
           </Text>
         </View>
       </View>

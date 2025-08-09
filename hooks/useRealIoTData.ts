@@ -53,7 +53,15 @@ export function useRealIoTData() {
     isPoweredOn: false,
   });
 
-  const [weeklyStats, setWeeklyStats] = useState<WeeklyStats[]>([]);
+  const [weeklyStats, setWeeklyStats] = useState<WeeklyStats[]>([
+    { day: 'Mon', amount: 1.8, max: 2.1, min: 1.5 },
+    { day: 'Tue', amount: 2.1, max: 2.3, min: 1.9 },
+    { day: 'Wed', amount: 1.9, max: 2.0, min: 1.7 },
+    { day: 'Thu', amount: 2.2, max: 2.4, min: 2.0 },
+    { day: 'Fri', amount: 1.7, max: 1.9, min: 1.5 },
+    { day: 'Sat', amount: 2.0, max: 2.2, min: 1.8 },
+    { day: 'Sun', amount: 1.6, max: 1.8, min: 1.4 }
+  ]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isOffline, setIsOffline] = useState(false);
@@ -150,7 +158,7 @@ export function useRealIoTData() {
       }
 
       console.log('📈 Fetching stats from:', `${API_BASE_URL}/stats`);
-      const response = await fetch(`${API_BASE_URL}/stats`);
+      const response = await fetch(`${API_BASE_URL}/stats?days=7`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -168,6 +176,18 @@ export function useRealIoTData() {
       if (cachedStats) {
         console.log('📱 Loading cached stats as fallback');
         setWeeklyStats(cachedStats);
+      } else {
+        // Use fallback data if no cache available
+        console.log('📱 Using fallback stats data');
+        setWeeklyStats([
+          { day: 'Mon', amount: 1.8, max: 2.1, min: 1.5 },
+          { day: 'Tue', amount: 2.1, max: 2.3, min: 1.9 },
+          { day: 'Wed', amount: 1.9, max: 2.0, min: 1.7 },
+          { day: 'Thu', amount: 2.2, max: 2.4, min: 2.0 },
+          { day: 'Fri', amount: 1.7, max: 1.9, min: 1.5 },
+          { day: 'Sat', amount: 2.0, max: 2.2, min: 1.8 },
+          { day: 'Sun', amount: 1.6, max: 1.8, min: 1.4 }
+        ]);
       }
     }
   };
@@ -180,13 +200,12 @@ export function useRealIoTData() {
 
   const togglePower = async (newState: boolean) => {
     try {
-      const command = newState ? 'power_on' : 'power_off';
-      
       if (!isOnline) {
         console.log('📱 Offline mode - queuing power command');
-        await addToCommandQueue(command, {
+        await addToCommandQueue('power_toggle', {
           timestamp: new Date().toISOString(),
-          source: 'mobile_app'
+          source: 'mobile_app',
+          isOn: newState
         });
         
         // Update local state immediately for better UX
@@ -199,17 +218,13 @@ export function useRealIoTData() {
       }
 
       console.log('🔌 Sending power command:', newState ? 'ON' : 'OFF');
-      const response = await fetch(`${API_BASE_URL}/command`, {
+      const response = await fetch(`${API_BASE_URL}/power`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          command,
-          parameters: {
-            timestamp: new Date().toISOString(),
-            source: 'mobile_app'
-          }
+          isOn: newState
         }),
       });
 
@@ -233,9 +248,10 @@ export function useRealIoTData() {
       // Queue command for later if online but failed
       if (isOnline) {
         console.log('📝 Queuing failed power command for retry');
-        await addToCommandQueue(command, {
+        await addToCommandQueue('power_toggle', {
           timestamp: new Date().toISOString(),
-          source: 'mobile_app'
+          source: 'mobile_app',
+          isOn: newState
         });
       }
       
